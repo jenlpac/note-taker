@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const storage = require("../db/notes");
+const Storage = require("../db/notes");
 
 // GET request
 router.get("/notes", function(req, res) {
-  storage
+  Storage
     .getNotes()
     .then(notes => res.json(notes))
     .catch(err => res.status(500).json(err));
@@ -11,8 +11,8 @@ router.get("/notes", function(req, res) {
 
 // POST request
 router.post("/notes", function(req, res) {
-  storage
-    .postNote(req.body)
+  Storage
+    .addNote(req.body)
     .then((note) => res.json(note))
     .catch(err => res.status(500).json(err));
 });
