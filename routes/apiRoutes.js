@@ -1,26 +1,26 @@
 const router = require("express").Router();
-const save = require("../db/notes");
+const storage = require("../db/notes");
 
 // GET request
 router.get("/notes", function(req, res) {
-  save
+  storage
     .getNotes()
     .then(notes => res.json(notes))
     .catch(err => res.status(500).json(err));
 });
 
 // POST request
-router.post("/notes", (req, res) => {
-  save
-    .addNote(req.body)
+router.post("/notes", function(req, res) {
+  storage
+    .postNote(req.body)
     .then((note) => res.json(note))
     .catch(err => res.status(500).json(err));
 });
 
 // DELETE request:
 router.delete("/notes", function(req, res) {
-  save
-    .removeNote(req.params.id)
+  storage
+    .deleteNote(req.params.id)
     .then(() => res.json({ ok: true }))
     .catch(err => res.status(500).json(err));
 });

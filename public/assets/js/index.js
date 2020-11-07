@@ -1,66 +1,66 @@
-let noteTitle;
-let noteText;
-let saveNoteBtn;
-let newNoteBtn;
-let noteList;
+var $noteTitle = $('.note-title');
+var $noteText = $('.note-textarea');
+var $saveNoteBtn = $('.save-note');
+var $newNoteBtn = $('.new-note');
+var $noteList = $('.list-container .list-group');
 
-if (window.location.pathname === '/notes') {
-  noteTitle = document.querySelector('.note-title');
-  noteText = document.querySelector('.note-textarea');
-  saveNoteBtn = document.querySelector('.save-note');
-  newNoteBtn = document.querySelector('.new-note');
-  noteList = document.querySelectorAll('.list-container .list-group');
-}
+// if (window.location.pathname === '/notes') {
+//   noteTitle = document.querySelector('.note-title');
+//   noteText = document.querySelector('.note-textarea');
+//   saveNoteBtn = document.querySelector('.save-note');
+//   newNoteBtn = document.querySelector('.new-note');
+//   noteList = document.querySelectorAll('.list-container .list-group');
+// }
 
-// Show an element
-const show = (elem) => {
-  elem.style.display = 'inline';
-};
+// // Show an element
+// const show = (elem) => {
+//   elem.style.display = 'inline';
+// };
 
-// Hide an element
-const hide = (elem) => {
-  elem.style.display = 'none';
-};
+// // Hide an element
+// const hide = (elem) => {
+//   elem.style.display = 'none';
+// };
 
 // activeNote is used to keep track of the note in the textarea
-let activeNote = {};
+var activeNote = {};
 
-const getNotes = () =>
-  fetch('/api/notes', {
+var getNotes = function() {
+  return $.ajax({
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    url: '/api/notes'
   });
+};
 
-const saveNote = (note) =>
-  fetch('/api/notes', {
+var postNote = function(note) {
+  return $.ajax ({
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(note),
+    url: '/api/notes',
+    data: note,
   });
+};
 
-const deleteNote = (id) =>
-  fetch(`/api/notes/${id}`, {
+const deleteNote = function(id) {
+  return $.ajax ({
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    url: 'api/notes/' + id,
   });
+};
 
-const renderActiveNote = () => {
-  hide(saveNoteBtn);
+
+const renderActiveNote = function() {
+  $saveNoteBtn.hide();
 
   if (activeNote.id) {
-    noteTitle.setAttribute('readonly', true);
-    noteText.setAttribute('readonly', true);
-    noteTitle.value = activeNote.title;
-    noteText.value = activeNote.title;
+    $noteTitle.attr('readonly', true);
+    $noteText.attr('readonly', true);
+    $noteTitle.val(activeNote.title);
+    $noteText.val(activeNote.title);
   } else {
-    noteTitle.value = '';
-    noteText.value = '';
+    $noteTitle.attr('readonly', false);
+    $noteText.attr('readonly', false);
+    $noteTitle.val('');
+    $noteText.val('');
   }
 };
 
